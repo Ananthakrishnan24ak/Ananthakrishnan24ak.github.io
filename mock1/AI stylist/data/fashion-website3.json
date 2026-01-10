@@ -1,0 +1,62 @@
+[
+    {
+        "site": "fashion-website3",
+        "title": "Winter Jacket",
+        "type": "Jacket",
+        "price": 4200,
+        "discount": "18%",
+        "image": "/static/images/fashion-website3/jacket.png",
+        "link": "#",
+        "deliveryDate": "2025-09-10",
+        "manufactureDate": "2025-09-01",
+        "tags": [
+            "cold",
+            "travel"
+        ]
+    },
+    {
+        "site": "fashion-website3",
+        "title": "Pleated Skirt",
+        "type": "Skirt",
+        "price": 1600,
+        "discount": "10%",
+        "image": "/static/images/fashion-website3/skirt2.png",
+        "link": "#",
+        "deliveryDate": "2025-08-20",
+        "manufactureDate": "2025-08-12",
+        "tags": [
+            "mild",
+            "party"
+        ]
+    },
+    {
+        "site": "fashion-website3",
+        "title": "Suede Boots",
+        "type": "Boots",
+        "price": 3800,
+        "discount": "22%",
+        "image": "/static/images/fashion-website3/boots2.png",
+        "link": "#",
+        "deliveryDate": "2025-07-22",
+        "manufactureDate": "2025-07-15",
+        "tags": [
+            "winter",
+            "formal"
+        ]
+    },
+    {
+        "site": "fashion-website3",
+        "title": "Indoor Slippers",
+        "type": "Slippers",
+        "price": 650,
+        "discount": "15%",
+        "image": "/static/images/fashion-website3/slippers2.png",
+        "link": "#",
+        "deliveryDate": "2025-06-08",
+        "manufactureDate": "2025-06-01",
+        "tags": [
+            "warm",
+            "home"
+        ]
+    }
+]

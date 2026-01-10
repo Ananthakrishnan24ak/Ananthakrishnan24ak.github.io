@@ -1,0 +1,62 @@
+[
+    {
+        "site": "fashion-website2",
+        "title": "Formal Pant",
+        "type": "Pant",
+        "price": 1800,
+        "discount": "12%",
+        "image": "/static/images/fashion-website2/pant.png",
+        "link": "#",
+        "deliveryDate": "2025-06-28",
+        "manufactureDate": "2025-06-20",
+        "tags": [
+            "all seasons",
+            "office wear"
+        ]
+    },
+    {
+        "site": "fashion-website2",
+        "title": "Denim Shorts",
+        "type": "Shorts",
+        "price": 1100,
+        "discount": "8%",
+        "image": "/static/images/fashion-website2/shorts.png",
+        "link": "#",
+        "deliveryDate": "2025-05-20",
+        "manufactureDate": "2025-05-12",
+        "tags": [
+            "summer",
+            "casual"
+        ]
+    },
+    {
+        "site": "fashion-website2",
+        "title": "Comfort Slippers",
+        "type": "Slippers",
+        "price": 700,
+        "discount": "20%",
+        "image": "/static/images/fashion-website2/slippers.png",
+        "link": "#",
+        "deliveryDate": "2025-04-10",
+        "manufactureDate": "2025-04-02",
+        "tags": [
+            "warm",
+            "home wear"
+        ]
+    },
+    {
+        "site": "fashion-website2",
+        "title": "Plain Cotton T-Shirt",
+        "type": "T-Shirt",
+        "price": 950,
+        "discount": "10%",
+        "image": "/static/images/fashion-website2/tshirt2.png",
+        "link": "#",
+        "deliveryDate": "2025-03-25",
+        "manufactureDate": "2025-03-18",
+        "tags": [
+            "summer",
+            "daily wear"
+        ]
+    }
+]
