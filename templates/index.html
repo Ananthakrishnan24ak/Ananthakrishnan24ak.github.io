@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Fashion AI | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter
+    }
+
+    header {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #222
+    }
+
+    .logo span {
+      color: #d4a93a
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin-left: 20px;
+      padding: 8px 14px;
+      border-radius: 20px
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: #1c1c1c;
+      color: #fff
+    }
+
+    .hero {
+      text-align: center;
+      padding: 120px 20px
+    }
+
+    .hero h1 {
+      font-family: Playfair Display;
+      color: #d4a93a;
+      font-size: 46px
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 24px;
+      max-width: 700px;
+      margin: auto
+    }
+
+    .tiles-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px
+    }
+
+    .tile {
+      background: linear-gradient(135deg, #1c1c1c 0%, #111 100%);
+      border: 2px solid #d4a93a;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 280px
+    }
+
+    .tile:hover {
+      transform: translateY(-10px);
+      background: linear-gradient(135deg, #d4a93a22 0%, #d4a93a11 100%);
+      border-color: #fff
+    }
+
+    .tile-icon {
+      font-size: 60px;
+      margin-bottom: 20px
+    }
+
+    .tile-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #d4a93a;
+      margin-bottom: 10px;
+      font-family: Playfair Display
+    }
+
+    .tile-desc {
+      color: #aaa;
+      font-size: 14px
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">✨ Fashion<span>AI</span></div>
+    <nav>
+      <a class="active" href="/">Home</a>
+      {% if session.user_id %}
+      <a href="/wardrobe">Wardrobe</a>
+      <a href="/calendar">Calendar</a>
+      <a href="/outfits">Outfits</a>
+      <a href="/logout" style="color:#d4a93a">Logout ({{ session.username }})</a>
+      {% else %}
+      <a href="/login" style="color:#d4a93a">Login</a>
+      <a href="/signup">Sign Up</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Fashion AI</h1>
+    <p>Your intelligent stylist that plans outfits based on wardrobe, events, weather, and color intelligence.</p>
+  </section>
+
+  <div class="tiles-container">
+    <a href="/wardrobe" class="tile">
+      <div class="tile-icon">👗</div>
+      <div class="tile-title">Wardrobe</div>
+      <div class="tile-desc">Manage your clothing items with images and details</div>
+    </a>
+
+    <a href="/calendar" class="tile">
+      <div class="tile-icon">📅</div>
+      <div class="tile-title">Calendar</div>
+      <div class="tile-desc">Plan your events and outfit schedules</div>
+    </a>
+
+    <a href="/outfits" class="tile">
+      <div class="tile-icon">✨</div>
+      <div class="tile-title">Outfits</div>
+      <div class="tile-desc">Generate perfect outfit combinations</div>
+    </a>
+  </div>
+</body>
+
+</html>

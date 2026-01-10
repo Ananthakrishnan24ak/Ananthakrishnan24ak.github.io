@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Fashion AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: Inter, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #222;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #d4a93a;
+            border: none;
+            border-radius: 30px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .logo span {
+            color: #d4a93a;
+        }
+
+        a {
+            color: #d4a93a;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h2 class="logo">✨ Fashion<span>AI</span></h2>
+        <h3>Welcome Back</h3>
+
+        {% if error %}
+        <div style="color: #ff6b6b; margin-bottom: 10px; font-size: 14px;">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <p style="color: #666; font-size: 14px; margin-top: 20px;">
+            Don't have an account? <a href="/signup">Sign Up</a>
+        </p>
+    </div>
+
+</body>
+
+</html>

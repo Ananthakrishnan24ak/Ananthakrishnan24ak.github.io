@@ -1,0 +1,62 @@
+[
+    {
+        "site": "fashion-website1",
+        "title": "Casual Shirt",
+        "type": "Shirt",
+        "price": 1500,
+        "discount": "10%",
+        "image": "/static/images/fashion-website1/shirt.png",
+        "link": "#",
+        "deliveryDate": "2025-10-20",
+        "manufactureDate": "2025-10-10",
+        "tags": [
+            "mild",
+            "casual"
+        ]
+    },
+    {
+        "site": "fashion-website1",
+        "title": "Graphic T-Shirt",
+        "type": "T-Shirt",
+        "price": 900,
+        "discount": "15%",
+        "image": "/static/images/fashion-website1/tshirt.png",
+        "link": "#",
+        "deliveryDate": "2025-09-25",
+        "manufactureDate": "2025-09-15",
+        "tags": [
+            "summer",
+            "daily wear"
+        ]
+    },
+    {
+        "site": "fashion-website1",
+        "title": "Floral Skirt",
+        "type": "Skirt",
+        "price": 1200,
+        "discount": "5%",
+        "image": "/static/images/fashion-website1/skirt.png",
+        "link": "#",
+        "deliveryDate": "2025-08-15",
+        "manufactureDate": "2025-08-05",
+        "tags": [
+            "spring",
+            "party"
+        ]
+    },
+    {
+        "site": "fashion-website1",
+        "title": "Leather Boots",
+        "type": "Boots",
+        "price": 3500,
+        "discount": "20%",
+        "image": "/static/images/fashion-website1/boots.png",
+        "link": "#",
+        "deliveryDate": "2025-07-10",
+        "manufactureDate": "2025-07-01",
+        "tags": [
+            "winter",
+            "formal"
+        ]
+    }
+]

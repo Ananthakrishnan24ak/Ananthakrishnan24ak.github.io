@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Outfits | Fashion AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: Inter
+        }
+
+        header {
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #222
+        }
+
+        .logo span {
+            color: #d4a93a
+        }
+
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 14px;
+            border-radius: 20px
+        }
+
+        nav a.active,
+        nav a:hover {
+            background: #1c1c1c;
+            color: #fff
+        }
+
+        .box {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 30px;
+            background: #111;
+            border-radius: 20px
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            color: #d4a93a
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #1c1c1c;
+            color: white
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: #d4a93a;
+            font-weight: 600
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">✨ Fashion<span>AI</span></div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/wardrobe">Wardrobe</a>
+            <a href="/calendar">Calendar</a>
+            <a class="active" href="/outfits">Outfits</a>
+            <a href="/logout" style="color:#d4a93a">Logout</a>
+        </nav>
+    </header>
+
+    <div class="box">
+        <h2>Generate Outfit</h2>
+
+        <!-- AI Chat Input -->
+        <form method="POST"
+            style="margin-bottom:30px;background:#1c1c1c;padding:20px;border-radius:15px;border:1px solid #333">
+            <label style="margin-top:0">💬 Ask AI Stylist</label>
+            <div style="display:flex;gap:10px;margin-top:10px">
+                <input type="text" name="prompt"
+                    placeholder="e.g. 'I have a job interview and it's freezing outside...'"
+                    style="background:#333;color:#fff;border:1px solid #555">
+                <button type="submit" style="margin-top:0;width:auto;white-space:nowrap">✨ Magic Generate</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:8px 0 0 0">AI will automatically detect the Occasion and Weather
+                from
+                your text.</p>
+        </form>
+
+        <div style="display:flex;align-items:center;gap:20px;margin-bottom:20px">
+            <div style="height:1px;background:#333;flex:1"></div>
+            <span style="color:#666;font-size:12px">OR USE MANUAL CONTROLS</span>
+            <div style="height:1px;background:#333;flex:1"></div>
+        </div>
+
+        <form method="POST">
+            <label>Occasion</label>
+            <select name="occasion">
+                <option>Casual</option>
+                <option>Formal</option>
+                <option>Party</option>
+                <option>Office</option>
+            </select>
+
+            <label>Location (City)</label>
+            <input type="text" name="location" placeholder="e.g. London, New York" required>
+
+            <button type="submit">Generate Outfit</button>
+        </form>
+        <br>
+        <a href="/wardrobe">
+            <button>👕 Go to Wardrobe</button>
+        </a>
+    </div>
+
+    {% if searched and not outfits %}
+    <div class="box">
+        <h3 style="color:#ff6b6b">❌ No Matching Outfit Found</h3>
+        <p style="color:#aaa">Sorry! We couldn't find a Top + Bottom combination that matches your selected occasion,
+            temperature, and color matching rules.</p>
+        <p style="color:#aaa"><strong>Try:</strong></p>
+        <ul style="color:#aaa">
+            <li>Add more clothing items to your wardrobe with different colors</li>
+            <li>Choose a different occasion or temperature</li>
+            <li>Use proper color names (e.g., black, white, navy, denim, beige)</li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if outfits %}
+    <div class="box">
+        <h3>Generated Outfits</h3>
+
+        {% if ai_analysis %}
+        <div
+            style="background:linear-gradient(90deg, #1c1c1c, #2a2a2a);padding:15px;border-radius:10px;margin-bottom:20px;border-left:4px solid #d4a93a">
+            <div style="color:#d4a93a;font-weight:600;margin-bottom:4px">🤖 AI Analysis</div>
+            <div style="color:#ddd;font-size:14px">
+                Input: "<em>{{ ai_analysis.prompt }}</em>"<br>
+                Detected: <strong>{{ ai_analysis.occasion }}</strong> • <strong>{{ ai_analysis.temperature }}</strong>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if weather_info and not ai_analysis %}
+        <div
+            style="background:#1c1c1c;padding:10px;border-radius:10px;margin-bottom:20px;color:#d4a93a;display:flex;align-items:center;gap:10px">
+            <span style="font-size:24px">🌡️</span>
+            <div>
+                <strong>Weather in {{ weather_info.city }}</strong><br>
+                <span style="color:#fff">{{ weather_info.temp }}°C • {{ weather_info.desc }}</span>
+            </div>
+        </div>
+        {% endif %}
+        {% for outfit in outfits %}
+        <div
+            style="display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;margin-bottom:12px;background:#0f0f0f;flex-wrap:wrap">
+            <div style="width:120px;text-align:center">
+                {% if outfit.top.image %}
+                <img src="/static/uploads/{{ outfit.top.image }}"
+                    style="width:100%;height:100px;object-fit:cover;border-radius:8px">
+                {% else %}
+                <div
+                    style="width:100%;height:100px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#777">
+                    No Image</div>
+                {% endif %}
+                <div style="margin-top:6px;color:#d4a93a">{{ outfit.top.name }}</div>
+                <div style="color:#999;font-size:11px">Worn: {{ outfit.top.worn_count }} times</div>
+            </div>
+
+            <div style="width:120px;text-align:center">
+                {% if outfit.bottom.image %}
+                <img src="/static/uploads/{{ outfit.bottom.image }}"
+                    style="width:100%;height:100px;object-fit:cover;border-radius:8px">
+                {% else %}
+                <div
+                    style="width:100%;height:100px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#777">
+                    No Image</div>
+                {% endif %}
+                <div style="margin-top:6px;color:#d4a93a">{{ outfit.bottom.name }}</div>
+                <div style="color:#999;font-size:11px">Worn: {{ outfit.bottom.worn_count }} times</div>
+            </div>
+
+            <div style="width:120px;text-align:center">
+                {% if outfit.shoe and outfit.shoe.image %}
+                <img src="/static/uploads/{{ outfit.shoe.image }}"
+                    style="width:100%;height:100px;object-fit:cover;border-radius:8px">
+                {% else %}
+                <div
+                    style="width:100%;height:100px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#777">
+                    No Image</div>
+                {% endif %}
+                <div style="margin-top:6px;color:#d4a93a">{% if outfit.shoe %}{{ outfit.shoe.name }}{% else %}-{% endif
+                    %}</div>
+                <div style="color:#999;font-size:11px">{% if outfit.shoe %}Worn: {{ outfit.shoe.worn_count }} times{%
+                    endif %}
+                </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;margin-left:auto">
+                <div style="color:#aaa">Score: <strong style="color:#d4a93a">{{ outfit.score }}</strong></div>
+                <form method="POST" action="/outfit_worn" style="display:flex;gap:8px;flex-wrap:wrap">
+                    <input type="hidden" name="top_id" value="{{ outfit.top.id }}">
+                    <input type="hidden" name="bottom_id" value="{{ outfit.bottom.id }}">
+                    {% if outfit.shoe %}
+                    <input type="hidden" name="shoe_id" value="{{ outfit.shoe.id }}">
+                    {% endif %}
+                    <button type="submit"
+                        style="background:#d4a93a;color:black;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600">✓
+                        Mark as Worn</button>
+                </form>
+
+                {% if outfit.top.worn_count > 30 or outfit.bottom.worn_count > 30 or (outfit.shoe and
+                outfit.shoe.worn_count >
+                30) %}
+                <div
+                    style="background:#ff6b6b;color:white;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:600;text-align:center">
+                    ⚠️ Buy New Outfit!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+</body>
+
+</html>
