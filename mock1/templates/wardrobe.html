@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wardrobe | Fashion AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter
+    }
+
+    header {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #222
+    }
+
+    .logo span {
+      color: #d4a93a
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin-left: 20px;
+      padding: 8px 14px;
+      border-radius: 20px
+    }
+
+    nav a.active,
+    nav a:hover {
+      background: #1c1c1c;
+      color: #fff
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px
+    }
+
+    .form-box {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #111;
+      border-radius: 20px
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      color: #d4a93a
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #1c1c1c;
+      color: white
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 30px;
+      background: #d4a93a;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .drop-zone {
+      border: 2px dashed #d4a93a;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer
+    }
+
+    .drop-zone input {
+      display: none
+    }
+
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      margin-top: 10px;
+      border-radius: 10px;
+      object-fit: cover
+    }
+
+    .wardrobe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 50px
+    }
+
+    .item-tile {
+      background: #111;
+      border-radius: 15px;
+      overflow: hidden
+    }
+
+    .item-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover
+    }
+
+    .item-info {
+      padding: 15px
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #d4a93a
+    }
+
+    .item-details {
+      font-size: 12px;
+      color: #aaa
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px
+    }
+
+    .item-actions a {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .item-actions form {
+      flex: 1
+    }
+
+    .item-actions button {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer
+    }
+
+    .edit-btn {
+      background: #4CAF50;
+      color: white
+    }
+
+    .delete-btn {
+      background: #ff6b6b;
+      color: white
+    }
+
+    .wear-btn {
+      background: #2196F3;
+      color: white
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">✨ Fashion<span>AI</span></div>
+    <nav>
+      <a href="/">Home</a>
+      <a class="active" href="/wardrobe">Wardrobe</a>
+      <a href="/calendar">Calendar</a>
+      <a href="/outfits">Outfits</a>
+      <a href="/logout" style="color:#d4a93a">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <div class="form-box">
+      <h2>{% if edit_item %}Edit Clothing Item{% else %}Add Clothing Item{% endif %}</h2>
+
+      <!-- ✅ FORM FIXED -->
+      <form method="POST" enctype="multipart/form-data">
+
+        <label>Item Name</label>
+        <input name="name" value="{{ edit_item[1] if edit_item else '' }}" required>
+
+        <label>Category</label>
+        <select name="category" required>
+          <option {% if edit_item and edit_item[2]=='Top' %}selected{% endif %}>Top</option>
+          <option {% if edit_item and edit_item[2]=='Bottom' %}selected{% endif %}>Bottom</option>
+          <option {% if edit_item and edit_item[2]=='Shoe' %}selected{% endif %}>Shoe</option>
+        </select>
+
+        <label>Formality</label>
+        <select name="formality" required>
+          <option {% if edit_item and edit_item[3]=='Casual' %}selected{% endif %}>Casual</option>
+          <option {% if edit_item and edit_item[3]=='Formal' %}selected{% endif %}>Formal</option>
+          <option {% if edit_item and edit_item[3]=='Party' %}selected{% endif %}>Party</option>
+          <option {% if edit_item and edit_item[3]=='All' %}selected{% endif %}>All</option>
+        </select>
+
+        <label>Season</label>
+        <select name="season" required>
+          <option {% if edit_item and edit_item[4]=='Summer' %}selected{% endif %}>Summer</option>
+          <option {% if edit_item and edit_item[4]=='Winter' %}selected{% endif %}>Winter</option>
+          <option {% if edit_item and edit_item[4]=='All' %}selected{% endif %}>All</option>
+        </select>
+
+        <label>Color</label>
+        <input name="color" value="{{ edit_item[5] if edit_item else '' }}" required>
+
+        <label>Upload Image</label>
+        <div class="drop-zone" onclick="document.getElementById('imageInput').click()">
+          <p>Click to select image</p>
+          <img id="preview" class="image-preview" style="display:none">
+          <!-- ⚠️ INPUT IS INSIDE FORM -->
+          <input type="file" id="imageInput" name="image" accept="image/*">
+        </div>
+
+        {% if edit_item %}
+        <button type="submit" name="update" value="{{ edit_item[0] }}">Update Item</button>
+        <a href="/wardrobe"
+          style="color:black;background:#aaa;padding:14px 20px;border-radius:30px;text-decoration:none;display:inline-block;margin-top:10px">Cancel</a>
+        {% else %}
+        <button type="submit">Add to Wardrobe</button>
+        {% endif %}
+
+      </form>
+    </div>
+
+    {% if items %}
+    <div class="wardrobe-grid">
+      {% for item in items %}
+      <div class="item-tile">
+        {% if item[6] %}
+        <img src="/static/uploads/{{ item[6] }}" class="item-image">
+        {% else %}
+        <div class="item-image" style="display:flex;align-items:center;justify-content:center;color:#aaa">No Image</div>
+        {% endif %}
+        <div class="item-info">
+          <div class="item-name">{{ item[1] }}</div>
+          <div class="item-details">{{ item[2] }} • {{ item[3] }}</div>
+          <div class="item-details">{{ item[4] }} • {{ item[5] }}</div>
+          <div class="item-details" style="color:#2196F3;font-weight:bold;margin-top:4px">Worn: {{ item[7] }} times
+          </div>
+          <div class="item-actions">
+            <a href="/wardrobe?edit_id={{ item[0] }}" class="edit-btn">Edit</a>
+            <form method="POST">
+              <button name="wear" value="{{ item[0] }}" class="wear-btn">+1 Wear</button>
+            </form>
+            <form method="POST">
+              <button name="delete" value="{{ item[0] }}" class="delete-btn">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+
+  <script>
+    const input = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+
+</body>
+
+</html>

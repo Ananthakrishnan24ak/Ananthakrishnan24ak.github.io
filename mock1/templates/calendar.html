@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar | Fashion AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter
+    }
+
+    header {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #222
+    }
+
+    .logo span {
+      color: #d4a93a
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin-left: 20px;
+      padding: 8px 14px;
+      border-radius: 20px
+    }
+
+    nav a.active,
+    nav a:hover {
+      background: #1c1c1c;
+      color: #fff
+    }
+
+    .box {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 30px;
+      background: #111;
+      border-radius: 20px
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      color: #d4a93a
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #1c1c1c;
+      color: white
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 30px;
+      background: #d4a93a;
+      font-weight: 600
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">✨ Fashion<span>AI</span></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/wardrobe">Wardrobe</a>
+      <a class="active" href="/calendar">Calendar</a>
+      <a href="/outfits">Outfits</a>
+      <a href="/logout" style="color:#d4a93a">Logout</a>
+    </nav>
+  </header>
+
+  <div class="box">
+    <h2>Manage Events</h2>
+    <form method="POST">
+      <label>Event Title</label>
+      <input name="title" value="{{ edit_event[1] if edit_event else '' }}" required>
+
+      <label>Date</label>
+      <input type="date" name="date" value="{{ edit_event[2] if edit_event else '' }}" required>
+
+      <label>Type</label>
+      <select name="event_type">
+        <option {% if edit_event and edit_event[3]=='Work' %}selected{% endif %}>Work</option>
+        <option {% if edit_event and edit_event[3]=='Party' %}selected{% endif %}>Party</option>
+        <option {% if edit_event and edit_event[3]=='Casual' %}selected{% endif %}>Casual</option>
+      </select>
+
+      {% if edit_event %}
+      <button type="submit" name="update" value="{{ edit_event[0] }}">Update Event</button>
+      <a href="/calendar" style="color:#aaa;margin-left:10px;text-decoration:none">Cancel</a>
+      {% else %}
+      <button type="submit">Add Event</button>
+      {% endif %}
+    </form>
+  </div>
+
+  {% if events %}
+  <div class="box">
+    <h3>Upcoming Events</h3>
+    {% for event in events %}
+    <div
+      style="background:#1c1c1c;padding:15px;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="color:#d4a93a;font-weight:600">{{ event[1] }}</div>
+        <div style="color:#777;font-size:12px">{{ event[2] }} • {{ event[3] }}</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a href="/calendar?edit_id={{ event[0] }}" style="color:white;text-decoration:none;font-size:12px">Edit</a>
+        <form method="POST" style="margin:0">
+          <button name="delete" value="{{ event[0] }}"
+            style="background:none;color:#ff6b6b;padding:0;margin:0;font-size:12px;cursor:pointer">Delete</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</body>
+
+</html>

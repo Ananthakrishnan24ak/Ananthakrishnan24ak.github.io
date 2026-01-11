@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AI Stylist – Outfit Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-black text-white p-6">
+        <h1 class="text-3xl font-bold">AI Stylist 👗</h1>
+        <p class="text-gray-300">Smart outfit suggestions</p>
+    </header>
+
+    <section class="bg-white p-6 shadow-md">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+                <label for="occasion" class="block text-sm font-medium text-gray-700">Occasion</label>
+                <select id="occasion" class="border p-2 rounded w-full">
+                    <option value="">Select Occasion</option>
+                    <option>Casual</option>
+                    <option>Daily Wear</option>
+                    <option>Party</option>
+                    <option>Formal</option>
+                    <option>Office Wear</option>
+                    <option>Home Wear</option>
+                    <option>Travel</option>
+                </select>
+            </div>
+            <div>
+                <label for="region" class="block text-sm font-medium text-gray-700">Region</label>
+                <input id="region" placeholder="Region" class="border p-2 rounded w-full">
+            </div>
+            <div>
+                <label for="climate" class="block text-sm font-medium text-gray-700">Climate</label>
+                <select id="climate" class="border p-2 rounded w-full">
+                    <option value="">Select Climate</option>
+                    <option>Mild</option>
+                    <option>Summer</option>
+                    <option>Spring</option>
+                    <option>Winter</option>
+                    <option>All Seasons</option>
+                    <option>Warm</option>
+                    <option>Cold</option>
+                </select>
+            </div>
+            <div>
+                <label for="weather" class="block text-sm font-medium text-gray-700">Weather</label>
+                <select id="weather" class="border p-2 rounded w-full">
+                    <option value="">Select Weather</option>
+                    <option>Sunny</option>
+                    <option>Rainy</option>
+                    <option>Cloudy</option>
+                </select>
+            </div>
+            <div>
+                <label for="date" class="block text-sm font-medium text-gray-700">Occasion Date</label>
+                <input id="date" type="date" class="border p-2 rounded w-full">
+            </div>
+        </div>
+
+        <button onclick="findOutfits()" class="mt-4 bg-black text-white px-6 py-2 rounded">
+            Find Outfits
+        </button>
+    </section>
+
+    <section class="p-6">
+        <h2 class="text-2xl font-semibold mb-4">Recommended Garments</h2>
+        <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <footer class="bg-black text-white text-center p-4 mt-10">
+        AI Stylist © 2026
+    </footer>
+
+    <script>
+        async function findOutfits() {
+            const occasion = document.getElementById('occasion').value;
+            const region = document.getElementById('region').value;
+            const climate = document.getElementById('climate').value;
+            const weather = document.getElementById('weather').value;
+            const occasionDate = document.getElementById('date').value;
+
+            if (!occasion || !climate || !occasionDate) {
+                alert('Please select occasion, climate, and date.');
+                return;
+            }
+
+            const payload = {
+                occasion,
+                climate,
+                occasionDate,
+                region,
+                weather
+            };
+
+            try {
+                const res = await fetch('/api/outfits', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || 'Failed to fetch outfits');
+                }
+
+                const data = await res.json();
+                const results = document.getElementById('results');
+                results.innerHTML = '';
+
+                if (data.length === 0) {
+                    results.innerHTML = '<p>No garments found matching your criteria.</p>';
+                    return;
+                }
+
+                data.forEach(item => {
+                    // Logic to handle delivery date display safely
+                    let deliveryDateStr = 'Unknown';
+                    if (item.deliveryDate) {
+                        deliveryDateStr = new Date(item.deliveryDate).toLocaleDateString();
+                    }
+
+                    results.innerHTML += `
+        <div class="bg-white rounded shadow">
+          <img src="${item.image}" class="w-full h-64 object-cover rounded-t" alt="${item.title}">
+          <div class="p-4">
+            <h3 class="font-bold text-lg">${item.title}</h3>
+            <p>Type: ${item.type}</p>
+            <p>₹${item.price} <span class="text-sm text-red-500">${item.discount ? `(${item.discount} off)` : ''}</span></p>
+            <p class="text-green-600">
+              Delivery by ${deliveryDateStr}
+            </p>
+            <p class="text-xs text-gray-500 mt-1">Source: ${item.site}</p>
+            <a href="${item.link}"
+               class="block mt-3 bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700">
+              Buy Now
+            </a>
+          </div>
+        </div>
+      `;
+                });
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
